@@ -44,3 +44,6 @@ This project is licensed under the [MIT License](LICENSE).
 ## Author
 
 **YashfaMir**
+## Status
+
+This repository is being developed as part of the FlyRank AI Internship setup assignment.
