@@ -16,15 +16,15 @@
 
         <form id="settings-form" novalidate>
           <div class="field-group">
-            <label for="name">Full name</label>
+            <label for="displayName">Display name</label>
             <input
-              id="name"
-              name="name"
+              id="displayName"
+              name="displayName"
               type="text"
-              placeholder="Enter your full name"
-              aria-describedby="name-error"
+              placeholder="Enter your display name"
+              aria-describedby="displayName-error"
             />
-            <small id="name-error" class="error-message" aria-live="polite"></small>
+            <small id="displayName-error" class="error-message" aria-live="polite"></small>
           </div>
 
           <div class="field-group">
@@ -39,6 +39,16 @@
             <small id="email-error" class="error-message" aria-live="polite"></small>
           </div>
 
+          <div class="field-group">
+            <label for="notifications">Notification preference</label>
+            <select id="notifications" name="notifications" aria-describedby="notifications-help">
+              <option value="all">All notifications</option>
+              <option value="important">Important only</option>
+              <option value="none">None</option>
+            </select>
+            <small id="notifications-help" class="error-message" aria-hidden="true">Default: All notifications</small>
+          </div>
+
           <div class="actions">
             <button type="submit" class="submit-btn">Save changes</button>
           </div>
@@ -48,6 +58,6 @@
       </section>
     </main>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>

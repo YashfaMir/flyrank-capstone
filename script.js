@@ -1,70 +1,67 @@
+import { validateDisplayName, validateEmail as validateEmailValue } from './validation.js';
+
 const form = document.getElementById('settings-form');
-const nameInput = document.getElementById('name');
+const displayNameInput = document.getElementById('displayName');
 const emailInput = document.getElementById('email');
+const notificationsSelect = document.getElementById('notifications');
 const successMessage = document.getElementById('success-message');
 
 const setError = (input, message) => {
   const errorElement = document.getElementById(`${input.id}-error`);
   input.classList.add('invalid');
-  errorElement.textContent = message;
+  if (errorElement) errorElement.textContent = message;
 };
 
 const clearError = (input) => {
   const errorElement = document.getElementById(`${input.id}-error`);
   input.classList.remove('invalid');
-  errorElement.textContent = '';
+  if (errorElement) errorElement.textContent = '';
 };
 
-const validateName = () => {
-  const value = nameInput.value.trim();
-
-  if (!value) {
-    setError(nameInput, 'Name is required.');
+const validateDisplayNameField = () => {
+  const value = displayNameInput.value;
+  const result = validateDisplayName(value);
+  if (!result.valid) {
+    setError(displayNameInput, result.message);
     return false;
   }
-
-  if (value.length < 2) {
-    setError(nameInput, 'Name must be at least 2 characters long.');
-    return false;
-  }
-
-  clearError(nameInput);
+  clearError(displayNameInput);
   return true;
 };
 
-const validateEmail = () => {
-  const value = emailInput.value.trim();
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  if (!value) {
-    setError(emailInput, 'Email is required.');
+const validateEmailField = () => {
+  const value = emailInput.value;
+  const result = validateEmailValue(value);
+  if (!result.valid) {
+    setError(emailInput, result.message);
     return false;
   }
-
-  if (!emailPattern.test(value)) {
-    setError(emailInput, 'Please enter a valid email address.');
-    return false;
-  }
-
   clearError(emailInput);
   return true;
 };
 
-nameInput.addEventListener('input', validateName);
-emailInput.addEventListener('input', validateEmail);
+displayNameInput.addEventListener('input', validateDisplayNameField);
+emailInput.addEventListener('input', validateEmailField);
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
-  const isNameValid = validateName();
-  const isEmailValid = validateEmail();
+  const isDisplayNameValid = validateDisplayNameField();
+  const isEmailValid = validateEmailField();
 
-  if (!isNameValid || !isEmailValid) {
+  if (!isDisplayNameValid || !isEmailValid) {
     successMessage.textContent = '';
     successMessage.classList.remove('visible');
     return;
   }
 
+  const payload = {
+    displayName: displayNameInput.value.trim(),
+    email: emailInput.value.trim(),
+    notifications: notificationsSelect.value,
+  };
+
   successMessage.textContent = 'Settings saved successfully.';
   successMessage.classList.add('visible');
+  // In a real app we'd send `payload` to the server here.
 });
